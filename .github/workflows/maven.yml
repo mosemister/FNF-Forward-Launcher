@@ -10,9 +10,10 @@ on:
     branches: [ main ]
   workflow_dispatch:
     inputs:
-      description: 'version override'
-      required: false
-      default: 'useGit'
+      version:
+        description: 'version override'
+        required: false
+        default: 'useGit'
 
 jobs:
   build:
