@@ -39,10 +39,10 @@ jobs:
       run: mvn -B "-Djar.finalName=FNFForwardLauncher" package --file pom.xml
     - name: create version specified
       if: ${{github.event.inputs.specifiedVersion != null}}
-      run: java -jar FNFForwardLauncher.jar --specifiedVersion ${{github.event.inputs.specifiedVersion}}
+      run: java -jar target/FNFForwardLauncher.jar --specifiedVersion ${{github.event.inputs.specifiedVersion}}
     - name: create version unspecified
       if: ${{github.event.inputs.specifiedVersion == null}}
-      run: java -jar FNFForwardLauncher.jar --specifiedVersion ${{github.run_number}}
+      run: java -jar target/FNFForwardLauncher.jar --specifiedVersion ${{github.run_number}}
     - name: Build with Maven again
       run: mvn -B "-Djar.finalName=FNFForwardLauncher" package --file pom.xml
     - name: Package to exe
