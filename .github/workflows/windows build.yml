@@ -4,7 +4,10 @@ on:
   push:
     branches: [ main, actions ]
   workflow_dispatch:
-    
+    inputs:
+      version:
+        description: "specified version"
+        required: false
 
 jobs:
   build:
@@ -33,6 +36,14 @@ jobs:
         java-version: '16'
         distribution: 'adopt'
     - name: Build with Maven
+      run: mvn -B "-Djar.finalName=FNFForwardLauncher" package --file pom.xml
+    - name: create version specified
+      if: ${{github.event.inputs.specifiedVersion != ""}}
+      run: java -jar FNFForwardLauncher.jar --specifiedVersion ${{github.event.inputs.specifiedVersion}}
+    - name: create version unspecified
+      if: ${{github.event.inputs.specifiedVersion == ""}}
+      run: java -jar FNFForwardLauncher.jar --specifiedVersion ${{github.run_number}}
+    - name: Build with Maven again
       run: mvn -B "-Djar.finalName=FNFForwardLauncher" package --file pom.xml
     - name: Package to exe
       run: jpackage --input ./target/ --name FNF-Forward-Launcher --main-jar FNFForwardLauncher.jar --type exe --icon ./src/main/resources/icon.ico --vendor FNF-Forward --win-dir-chooser --win-shortcut --win-menu --win-menu-group FNF-Forward
