@@ -31,6 +31,8 @@ public class StandAloneLauncher {
                 System.exit(0);
                 return;
             }
+            System.out.println("Unknown arguments: " + String.join(" ", args));
+            return;
         }
 
         ForwardLauncher.main(args);
