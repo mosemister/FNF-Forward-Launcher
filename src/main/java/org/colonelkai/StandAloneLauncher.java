@@ -11,27 +11,57 @@ public class StandAloneLauncher {
 
     public static void main(String[] args) {
         if (args.length != 0) {
-            if (args[0].equalsIgnoreCase("--specifiedVersion")) {
-                StringBuilder builder = new StringBuilder();
-                for (int A = 1; A < args.length; A++) {
-                    builder.append(args[A]);
+            Integer gitRun = null;
+            StringBuilder tagName = new StringBuilder();
+            StringBuilder specifiedVersion = new StringBuilder();
+            String argType = "None";
+            for (String arg : args) {
+                if (arg.startsWith("--")) {
+                    argType = arg.substring(2).toLowerCase();
+                    continue;
                 }
-                SimpleRootDataNode rootNode = new SimpleRootDataNode();
-                rootNode.at("ID", "FNF-Forward-Launcher");
-                rootNode.at("Version", builder.toString());
+                switch (argType) {
+                    case "specifiedversion":
+                        specifiedVersion.append(arg).append(" ");
+                        break;
+                    case "tagname":
+                        tagName.append(arg).append(" ");
+                        break;
+                    case "gitrun":
+                        try {
+                            gitRun = Integer.parseInt(arg);
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println(arg + " is not a whole number");
+                            System.exit(0);
+                            return;
+                        }
 
-                File file = new File("src/main/resources/meta/Info.json");
-                try {
-                    Files.createDirectories(file.getParentFile().toPath());
-                    Files.createFile(file.toPath());
-                    DataFileType.JSON.createFile().build(rootNode, file);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    default:
+                        System.err.println("Unknown argument: " + argType + " | value: " + arg);
                 }
-                System.exit(0);
-                return;
             }
-            System.out.println("Unknown arguments: " + String.join(" ", args));
+            SimpleRootDataNode rootNode = new SimpleRootDataNode();
+            rootNode.at("ID", "FNF-Forward-Launcher");
+            if (!specifiedVersion.isEmpty()) {
+                rootNode.at("SpecifiedVersion", specifiedVersion.toString().trim());
+            }
+            if (!tagName.isEmpty()) {
+                rootNode.at("TagName", tagName.toString().trim());
+            }
+            if (gitRun != null) {
+                rootNode.at("GitRun", gitRun);
+            }
+
+            File file = new File("src/main/resources/meta/Info.json");
+            try {
+                Files.createDirectories(file.getParentFile().toPath());
+                Files.createFile(file.toPath());
+                DataFileType.JSON.createFile().build(rootNode, file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.exit(0);
             return;
         }
 
