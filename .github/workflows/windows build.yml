@@ -43,7 +43,7 @@ jobs:
       run: mvn -B "-Djar.finalName=FNFForwardLauncher" package --file pom.xml
     - name: create version specified
       if: ${{github.event.inputs.specifiedVersion != null}}
-      run: java -jar target/FNFForwardLauncher.jar --specifiedVersion ${{github.event.inputs.specifiedVersion}}
+      run: java -jar target/FNFForwardLauncher.jar --gitrun ${{github.run_number}} --tagName ${{github.ref}} --specifiedVersion ${{github.event.inputs.specifiedVersion}}
     - name: create version unspecified
       if: ${{github.event.inputs.specifiedVersion == null}}
       run: java -jar target/FNFForwardLauncher.jar --gitrun ${{github.run_number}} --tagName ${{github.ref}}
