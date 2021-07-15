@@ -19,11 +19,6 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Show Input specifiedVersion
-      uses: echo ${{github.event.inputs.specifiedVersion}}
-      if: ${{github.event.inputs.specifiedVersion != null}}
-    - name: Show Input actualVersion
-      uses: echo ${{github.event.inputs.actualVersion}}
     - name: Download Wix
       uses: i3h/download-release-asset@v1
       with:
