@@ -5,7 +5,7 @@ on:
     branches: [ main, actions ]
   workflow_dispatch:
     inputs:
-      version:
+      specifiedVersion:
         description: "specified version"
         required: false
       actualVersion:
