@@ -52,12 +52,10 @@ jobs:
     - name: Make directory
       run: mkdir installer
     - name: Copy file over
-      run: copy FNFForwardLauncher.jar ./installer/
-    - name: CD to
-      run: cd ./installer/
+      run: copy ./target/FNFForwardLauncher.jar ./installer/
       
     - name: Package to exe
-      run: jpackage --input ./target/ --name FNF-Forward-Launcher --main-jar FNFForwardLauncher.jar --app-version ${{github.event.inputs.actualVersion}} --type exe --icon ./src/main/resources/icon.ico --vendor FNF-Forward --win-dir-chooser --win-shortcut --win-menu --win-menu-group FNF-Forward
+      run: jpackage --input ./installer/ --name FNF-Forward-Launcher --main-jar FNFForwardLauncher.jar --app-version ${{github.event.inputs.actualVersion}} --type exe --icon ./src/main/resources/icon.ico --vendor FNF-Forward --win-dir-chooser --win-shortcut --win-menu --win-menu-group FNF-Forward
 
     - uses: actions/upload-artifact@v2
       with:
